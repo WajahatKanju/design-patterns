@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("UndoRedoEditor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ff8db69fb148b22fa4322bfdafe59d0db2a5e2d9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+55a9949713360eaa0a50f41317d9c3f91345f7a9")]
 [assembly: System.Reflection.AssemblyProductAttribute("UndoRedoEditor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("UndoRedoEditor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

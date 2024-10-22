@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 
-// Command Interface
 public interface ICommand
 {
-  void Exectute();
+  void Execute();
   void UnExecute();
 }
 
 public class TextEditor
 {
   public string Content { get; private set; } = "";
+
   public void Write(string text)
   {
     Content += text;
-    Console.WriteLine($"Current content {Content}");
+    Console.WriteLine($"Current content: {Content}");
   }
+
   public void DeleteLast(int length)
   {
     if (Content.Length >= length)
@@ -26,7 +27,7 @@ public class TextEditor
     {
       Content = "";
     }
-    Console.WriteLine($"Current Content {Content}");
+    Console.WriteLine($"Current Content: {Content}");
   }
 }
 
@@ -41,10 +42,11 @@ public class WriteCommand : ICommand
     _text = text;
   }
 
-  public void Exectute()
+  public void Execute()
   {
     _editor.Write(_text);
   }
+
   public void UnExecute()
   {
     _editor.DeleteLast(_text.Length);
@@ -54,22 +56,23 @@ public class WriteCommand : ICommand
 public class DeleteCommand : ICommand
 {
   private TextEditor _editor;
-  private int _length;
+  private string _deletedText;
 
   public DeleteCommand(TextEditor editor, int length)
   {
     _editor = editor;
-    _length = length;
-  }
-  public void Exectute()
-  {
-    _editor.DeleteLast(_length);
-  }
-  public void UnExecute()
-  {
-    Console.WriteLine("Not So Simple");
+    _deletedText = editor.Content.Substring(editor.Content.Length - length);
   }
 
+  public void Execute()
+  {
+    _editor.DeleteLast(_deletedText.Length);
+  }
+
+  public void UnExecute()
+  {
+    _editor.Write(_deletedText);
+  }
 }
 
 public class EditorInvoker
@@ -79,7 +82,7 @@ public class EditorInvoker
 
   public void ExecuteCommand(ICommand command)
   {
-    command.Exectute();
+    command.Execute();
     _commandHistory.Push(command);
     _redoStack.Clear();
   }
@@ -103,7 +106,7 @@ public class EditorInvoker
     if (_redoStack.Count > 0)
     {
       ICommand command = _redoStack.Pop();
-      command.UnExecute();
+      command.Execute();
       _commandHistory.Push(command);
     }
     else
@@ -113,7 +116,7 @@ public class EditorInvoker
   }
 }
 
-public class Prgoram
+public class Program
 {
   public static void Main(string[] args)
   {
@@ -123,10 +126,7 @@ public class Prgoram
     invoker.ExecuteCommand(new WriteCommand(editor, "Hello, "));
     invoker.ExecuteCommand(new WriteCommand(editor, "world!"));
 
-    // Undo the last command (deletes "world!")
     invoker.Undo();
-
-    // Redo the last undone command (re-adds "world!")
     invoker.Redo();
   }
 }
